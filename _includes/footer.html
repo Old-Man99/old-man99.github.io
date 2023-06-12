@@ -4,36 +4,33 @@
     <footer>
         <div class = "footer_div">
         <nav class="cover-navigation navigation--social">
-
-        </nav>
-
             <div class='navbar-logo console-container'>
                 <span id='text'></span>
                 <div class='console-underscore' id='console'>&#95;</div>
             </div>
-
+        </nav>
         </div>
 
-        <div class = "footer_div">
+        <<!--div class = "footer_div">
            <p class="copyright text-muted">
             Copyright &copy; {{ site.title }} {{ site.time | date: '%Y' }} Theme by <a href="https://old-man99.github.io/">SteveYin</a> |
-            <!--<iframe
+            &lt;!&ndash;<iframe
                 style="margin-left: 2px; margin-bottom:-5px;"
                 frameborder="0" scrolling="0" width="91px" height="20px"
                 src="https://ghbtns.com/github-btn.html?user=leopardpan&repo=leopardpan.github.io&type=star&count=true" >
-            </iframe>-->
+            </iframe>&ndash;&gt;
             </p>
-        	<div align="right">
+            &lt;!&ndash;<div align="right">
     			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-          <!-- 访问统计 -->
+          &lt;!&ndash; 访问统计 &ndash;&gt;
           <span id="busuanzi_container_site_pv">
             本站总访问量
             <span id="busuanzi_value_site_pv"></span>次
           </span>
 
-        </div>
-        <div>
+        </div>&ndash;&gt;
+        <div>-->
     </footer>
 </section>
 <script>
@@ -42,24 +39,22 @@
     // function([string1, string2],target id,[color1,color2])
 
 
-    consoleText(['Hello World. . .'], 'text');
+    consoleText([''], 'text');
 
     function consoleText(words, id) {
         debugger
         var con = "";
-
         $.ajax({
-            url: "https://apis.tianapi.com/caihongpi/index",
+            url: "https://api.shadiao.pro/chp",
             dataType:"json",
             async:false,
             type: "GET",
-            data: {"key": "d4e74a7cc2aab006bd66d7e81784cc79"},
+            /*data: {"key": "d4e74a7cc2aab006bd66d7e81784cc79"},*/
             success: function(result){
                 debugger
-                con = result.result.content;
+                con = result.data.text;
             }
         });
-
         words[0] = con;
         var colors = [getColor()];
         if (colors === undefined) colors = ['#fff'];
@@ -71,10 +66,25 @@
         var target = document.getElementById(id)
 
         target.setAttribute('style', 'color:' + colors[0])
+
         window.setInterval(function() {
 
             if (letterCount === 0 && waiting === false) {
                 waiting = true;
+                var con = "";
+                $.ajax({
+                    url: "https://api.shadiao.pro/chp",
+                    dataType:"json",
+                    async:false,
+                    type: "GET",
+                    /*data: {"key": "d4e74a7cc2aab006bd66d7e81784cc79"},*/
+                    success: function(result){
+                        debugger
+                        con = result.data.text;
+                    }
+                });
+                words[0] = con;
+
                 target.innerHTML = words[0].substring(0, letterCount)
                 window.setTimeout(function() {
                     var usedColor = colors.shift();
