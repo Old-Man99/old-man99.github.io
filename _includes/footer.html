@@ -47,10 +47,9 @@
             success: function(result){
                 debugger
                 con = result.result.content;
-                var test = result.result.content;
-                console.log(con +" " + test)
             }
         });
+        return con;
     }
 
     // function([string1, string2],target id,[color1,color2])
@@ -59,8 +58,9 @@
     consoleText(['Hello World. . .'], 'text');
 
     function consoleText(words, id) {
+        debugger
         var con = "";
-        caihongpi(con);
+        con = caihongpi(con);
         words[0] = con;
         var colors = [getColor()];
         if (colors === undefined) colors = ['#fff'];
