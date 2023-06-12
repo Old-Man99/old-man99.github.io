@@ -1,12 +1,5 @@
 <script src="/js/jquery-3.3.1.js"></script>
 <style>
-    @import url(https://fonts.googleapis.com/css?family=Khula:700);
-    body {
-        background: #111;
-    }
-    .hidden {
-        opacity:0;
-    }
     .console-container {
 
         font-family:Khula;
@@ -28,9 +21,6 @@
         position:relative;
         top:-0.14em;
         left:10px;
-    }
-    .this{
-        color:#eb5054;
     }
 </style>
 
@@ -71,28 +61,15 @@
     </footer>
 </section>
 <script>
-    $(document).ready(function() {
-        $.ajax({
-            url: "/je/gwgl/filter/login",
-            dataType:"json",
-            type: "POST",
-            data: {},
-            success: function(result){
-                var shiro_Cookie = result.obj.Shiro_Cookie;
-                var iphost = result.obj.IP_HOST;
-                document.cookie = "Shiro-Cookie=" + shiro_Cookie.split('=')[1];
-                window.location.href = iphost+"/#/"+url+"?"+shiro_Cookie+"&v="+new Date().getTime();
-            }
-        });
-    })
 
     function caihongpi(con) {
         $.ajax({
             url: "https://apis.tianapi.com/caihongpi/index",
             dataType:"json",
             type: "GET",
-            data: {'key': 'd4e74a7cc2aab006bd66d7e81784cc79'},
+            data: {"key": "d4e74a7cc2aab006bd66d7e81784cc79"},
             success: function(result){
+                debugger
                 con = result.result.content;
             }
         });
