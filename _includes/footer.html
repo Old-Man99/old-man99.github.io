@@ -1,135 +1,31 @@
-<script src="/js/jquery-3.3.1.js"></script>
-
 <section class="footer">
     <footer>
         <div class = "footer_div">
         <nav class="cover-navigation navigation--social">
-            <div class='navbar-logo console-container'>
-                <span id='text'></span>
-                <div class='console-underscore' id='console'>&#95;</div>
-            </div>
+
         </nav>
+
         </div>
 
-        <<!--div class = "footer_div">
+        <div class = "footer_div">
            <p class="copyright text-muted">
-            Copyright &copy; {{ site.title }} {{ site.time | date: '%Y' }} Theme by <a href="https://old-man99.github.io/">SteveYin</a> |
-            &lt;!&ndash;<iframe
+            Copyright &copy; {{ site.title }} {{ site.time | date: '%Y' }} Theme by <a href="https://old-man99.github.io/">old-man99.github.io</a> |
+            <!--<iframe
                 style="margin-left: 2px; margin-bottom:-5px;"
                 frameborder="0" scrolling="0" width="91px" height="20px"
                 src="https://ghbtns.com/github-btn.html?user=leopardpan&repo=leopardpan.github.io&type=star&count=true" >
-            </iframe>&ndash;&gt;
+            </iframe>-->
             </p>
-            &lt;!&ndash;<div align="right">
+        	<div align="right">
     			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-          &lt;!&ndash; 访问统计 &ndash;&gt;
+          <!-- 访问统计 -->
           <span id="busuanzi_container_site_pv">
             本站总访问量
             <span id="busuanzi_value_site_pv"></span>次
           </span>
 
-        </div>&ndash;&gt;
-        <div>-->
+        </div>
+        <div>
     </footer>
 </section>
-<script>
-
-
-    // function([string1, string2],target id,[color1,color2])
-
-
-    consoleText([''], 'text');
-
-    function consoleText(words, id) {
-        debugger
-        var con = "";
-        $.ajax({
-            url: "https://api.shadiao.pro/chp",
-            dataType:"json",
-            async:false,
-            type: "GET",
-            /*data: {"key": "d4e74a7cc2aab006bd66d7e81784cc79"},*/
-            success: function(result){
-                debugger
-                con = result.data.text;
-            }
-        });
-        words[0] = con;
-        var colors = [getColor()];
-        if (colors === undefined) colors = ['#fff'];
-        var visible = true;
-        var con = document.getElementById('console');
-        var letterCount = 1;
-        var x = 1;
-        var waiting = false;
-        var target = document.getElementById(id)
-
-        target.setAttribute('style', 'color:' + colors[0])
-
-        window.setInterval(function() {
-
-            if (letterCount === 0 && waiting === false) {
-                waiting = true;
-                var con = "";
-                $.ajax({
-                    url: "https://api.shadiao.pro/chp",
-                    dataType:"json",
-                    async:false,
-                    type: "GET",
-                    /*data: {"key": "d4e74a7cc2aab006bd66d7e81784cc79"},*/
-                    success: function(result){
-                        debugger
-                        con = result.data.text;
-                    }
-                });
-                words[0] = con;
-
-                target.innerHTML = words[0].substring(0, letterCount)
-                window.setTimeout(function() {
-                    var usedColor = colors.shift();
-                    colors.push(usedColor);
-                    var usedWord = words.shift();
-                    words.push(usedWord);
-                    x = 1;
-                    target.setAttribute('style', 'color:' + getColor())
-                    letterCount += x;
-                    waiting = false;
-                }, 1000)
-            } else if (letterCount === words[0].length + 1 && waiting === false) {
-                waiting = true;
-                window.setTimeout(function() {
-                    x = -1;
-                    letterCount += x;
-                    waiting = false;
-                }, 1000)
-            } else if (waiting === false) {
-                target.innerHTML = words[0].substring(0, letterCount)
-                letterCount += x;
-            }
-        }, 120)
-        window.setInterval(function() {
-            if (visible === true) {
-                con.className = 'console-underscore hidden'
-                visible = false;
-
-            } else {
-                con.className = 'console-underscore'
-
-                visible = true;
-            }
-        }, 400)
-    }
-
-    function getColor() {
-        var str = "#";
-        //一个十六进制的值的数组
-        var arr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
-        for (var i = 0; i < 6; i++) {
-            //产生的每个随机数都是一个索引,根据索引找到数组中对应的值,拼接到一起
-            var num = parseInt(Math.random() * 16);
-            str += arr[num];
-        }
-        return str;
-    }
-</script>
