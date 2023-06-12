@@ -1,28 +1,4 @@
 <script src="/js/jquery-3.3.1.js"></script>
-<style>
-    .console-container {
-
-        font-family:Khula;
-        font-size:3em;
-        text-align:left;
-        height:10px;
-        width:350px;
-        display:block;
-        position:absolute;
-        color:white;
-        top:0;
-        bottom:0;
-        left:0;
-        right:auto;
-        margin:auto;
-    }
-    .console-underscore {
-        display:inline-block;
-        position:relative;
-        top:-0.14em;
-        left:10px;
-    }
-</style>
 
 <section class="footer">
     <footer>
@@ -71,6 +47,8 @@
             success: function(result){
                 debugger
                 con = result.result.content;
+                var test = result.result.content;
+                console.log(con +" " + test)
             }
         });
     }
@@ -81,7 +59,7 @@
     consoleText(['Hello World. . .'], 'text');
 
     function consoleText(words, id) {
-        var con;
+        var con = "";
         caihongpi(con);
         words[0] = con;
         var colors = [getColor()];
