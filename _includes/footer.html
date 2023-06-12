@@ -38,19 +38,6 @@
 </section>
 <script>
 
-    function caihongpi(con) {
-        $.ajax({
-            url: "https://apis.tianapi.com/caihongpi/index",
-            dataType:"json",
-            type: "GET",
-            data: {"key": "d4e74a7cc2aab006bd66d7e81784cc79"},
-            success: function(result){
-                debugger
-                con = result.result.content;
-            }
-        });
-        return con;
-    }
 
     // function([string1, string2],target id,[color1,color2])
 
@@ -60,7 +47,19 @@
     function consoleText(words, id) {
         debugger
         var con = "";
-        con = caihongpi(con);
+
+        $.ajax({
+            url: "https://apis.tianapi.com/caihongpi/index",
+            dataType:"json",
+            async:false,
+            type: "GET",
+            data: {"key": "d4e74a7cc2aab006bd66d7e81784cc79"},
+            success: function(result){
+                debugger
+                con = result.result.content;
+            }
+        });
+
         words[0] = con;
         var colors = [getColor()];
         if (colors === undefined) colors = ['#fff'];
