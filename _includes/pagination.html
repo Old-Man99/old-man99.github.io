@@ -33,13 +33,13 @@
     function consoleText(words, id) {
         var con = "";
         $.ajax({
-            url: "https://www.yduanzi.com/duanzi/getduanzi",
+            url: "https://api.wenanmen.com/api/client/shi/rank",
             dataType:"json",
             async:false,
-            type: "POST",
-            /*data: {"key": "d4e74a7cc2aab006bd66d7e81784cc79"},*/
+            type: "GET",
+            data: {"type": "tang300"},
             success: function(result){
-                con = result.duanzi;
+                con = result.data.contents;
             }
         });
         words[0] = con;
@@ -60,13 +60,13 @@
                 waiting = true;
                 var con = "";
                 $.ajax({
-                    url: "https://www.yduanzi.com/duanzi/getduanzi",
+                    url: "https://api.wenanmen.com/api/client/shi/rank",
                     dataType:"json",
                     async:false,
-                    type: "POST",
-                    /*data: {"key": "d4e74a7cc2aab006bd66d7e81784cc79"},*/
+                    type: "GET",
+                    data: {"type": "tang300"},
                     success: function(result){
-                        con = result.duanzi;
+                        con = result.data.contents;
                     }
                 });
                 words[0] = con;
