@@ -1,15 +1,17 @@
+<script src="/js/jquery-3.3.1.js"></script>
+
 <header class="panel-cover {% if page.layout == 'post' or page.layout == 'page' %}panel-cover--collapsed{% endif %}" style="background-image: url('/images/background-cover.jpg')">
   <div class="panel-main">
 
     <div class="panel-main__inner panel-inverted">
     <div class="panel-main__content">
         <!-- 头像效果-start -->
-        <div class="ih-item circle effect right_to_left">            
+        <div class="ih-item circle effect right_to_left">
             <a href="/#blog" title="前往 {{ site.title }} 的主页" class="blog-button">
                 <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
                 <div class="info">
                     <div class="info-back">
-                        <h2> 
+                        <h2>
                             {% if site.avatarTitle %}
                                 {{site.avatarTitle}}
                             {% endif %}
@@ -29,13 +31,22 @@
         <span class="panel-cover__subtitle panel-subtitle">{{site.subtitle}}</span>
         {% endif %}
         <hr class="panel-cover__divider" />
-        <p class="panel-cover__description">{{ site.description }}</p>
+        <!--<p class="panel-cover__description">{{ site.description }}</p>-->
+
+        <nav class="cover-navigation navigation--social">
+            <div class='navbar-logo console-container' style="font-size: 16px;">
+                <span id='text'></span>
+                <!--<div class='console-underscore' id='console'>&#95;</div>-->
+            </div>
+        </nav>
+
+
         <hr class="panel-cover__divider panel-cover__divider--secondary" />
-        
+
         {% if site.welcome_message %}
         <p class="panel-cover__description">{{ site.welcome_message }}</p>
         {% endif %}
-        
+
 
         <div class="navigation-wrapper">
           <div>
@@ -47,14 +58,14 @@
                 {% endfor %}
               </ul>
             </nav>
-          </div>          
+          </div>
         </div>
 
 
         </div>
       </div>
     </div>
-    
+
     {% if site.cover_color %}
     <div class="panel-cover--overlay cover-{{site.cover_color}}"></div>
     {% else %}
@@ -62,3 +73,100 @@
     {% endif %}
   </div>
 </header>
+<script>
+
+    // function([string1, string2],target id,[color1,color2])
+
+    consoleText([''], 'text');
+
+    function consoleText(words, id) {
+        var con = "";
+        $.ajax({
+            url: "https://api.shadiao.pro/chp",
+            dataType:"json",
+            async:false,
+            type: "GET",
+            /*data: {"key": "d4e74a7cc2aab006bd66d7e81784cc79"},*/
+            success: function(result){
+                con = result.data.text;
+                con = con.replace(/\n/g, "<br>");
+            }
+        });
+        words[0] = con;
+        var colors = [getColor()];
+        if (colors === undefined) colors = ['#fff'];
+        var visible = true;
+        var con = document.getElementById('console');
+        var letterCount = 1;
+        var x = 1;
+        var waiting = false;
+        var target = document.getElementById(id)
+
+        target.setAttribute('style', 'color:' + colors[0])
+
+        window.setInterval(function() {
+
+            if (letterCount === 0 && waiting === false) {
+                waiting = true;
+                var con = "";
+                $.ajax({
+                    url: "https://api.shadiao.pro/chp",
+                    dataType:"json",
+                    async:false,
+                    type: "GET",
+                    /*data: {"key": "d4e74a7cc2aab006bd66d7e81784cc79"},*/
+                    success: function(result){
+                        con = result.data.text;
+                        con = con.replace(/\n/g, "<br>");
+                    }
+                });
+                words[0] = con;
+
+                target.innerHTML = words[0].substring(0, letterCount)
+                window.setTimeout(function() {
+                    var usedColor = colors.shift();
+                    colors.push(usedColor);
+                    var usedWord = words.shift();
+                    words.push(usedWord);
+                    x = 1;
+                    target.setAttribute('style', 'color:' + getColor())
+                    letterCount += x;
+                    waiting = false;
+                }, 1000)
+            } else if (letterCount === words[0].length + 1 && waiting === false) {
+                waiting = true;
+                window.setTimeout(function() {
+                    x = -1;
+                    letterCount += x;
+                    waiting = false;
+                }, 1000)
+            } else if (waiting === false) {
+                target.innerHTML = words[0].substring(0, letterCount)
+                letterCount += x;
+            }
+        }, 120)
+        /*window.setInterval(function() {
+            if (visible === true) {
+                con.className = 'console-underscore hidden'
+                visible = false;
+
+            } else {
+                con.className = 'console-underscore'
+
+                visible = true;
+            }
+        }, 400)*/
+    }
+
+    function getColor() {
+        var str = "#";
+        //一个十六进制的值的数组
+        var arr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
+        for (var i = 0; i < 6; i++) {
+            //产生的每个随机数都是一个索引,根据索引找到数组中对应的值,拼接到一起
+            var num = parseInt(Math.random() * 16);
+            str += arr[num];
+        }
+        return str;
+    }
+</script>
