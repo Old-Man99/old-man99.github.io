@@ -1,16 +1,116 @@
+<script src="/js/jquery-3.3.1.js"></script>
 <hr class="post-list__divider " />
 
 <nav class="pagination" role="navigation">
-
-	<!-- 百度搜索 -->
+    <div class='navbar-logo console-container'>
+        <span id='text'></span>
+        <!--<div class='console-underscore' id='console'>&#95;</div>-->
+    </div>
+	<!--&lt;!&ndash; 百度搜索 &ndash;&gt;
 	<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=12441349038163667913' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();
 	</script>
-	
+
     {% if paginator.previous_page %}
         <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="{{ paginator.previous_page_path }}#blog">&larr; 最近</a>
     {% endif %}
     <span class="pagination__page-number">{{ paginator.page }} / {{ paginator.total_pages }}</span>
     {% if paginator.next_page %}
         <a class="older-posts pagination__older btn btn-small btn-tertiary" href="{{ paginator.next_page_path }}#blog">更早 &rarr;</a>
-    {% endif %}
+    {% endif %}-->
 </nav>
+
+<script>
+
+    // function([string1, string2],target id,[color1,color2])
+
+    consoleText([''], 'text');
+
+    function consoleText(words, id) {
+        var con = "";
+        $.ajax({
+            url: "https://www.yduanzi.com/duanzi/getduanzi",
+            dataType:"json",
+            async:false,
+            type: "POST",
+            /*data: {"key": "d4e74a7cc2aab006bd66d7e81784cc79"},*/
+            success: function(result){
+                con = result.duanzi;
+            }
+        });
+        words[0] = con;
+        var colors = [getColor()];
+        if (colors === undefined) colors = ['#fff'];
+        var visible = true;
+        var con = document.getElementById('console');
+        var letterCount = 1;
+        var x = 1;
+        var waiting = false;
+        var target = document.getElementById(id)
+
+        target.setAttribute('style', 'color:' + colors[0])
+
+        window.setInterval(function() {
+
+            if (letterCount === 0 && waiting === false) {
+                waiting = true;
+                var con = "";
+                $.ajax({
+                    url: "https://www.yduanzi.com/duanzi/getduanzi",
+                    dataType:"json",
+                    async:false,
+                    type: "POST",
+                    /*data: {"key": "d4e74a7cc2aab006bd66d7e81784cc79"},*/
+                    success: function(result){
+                        con = result.duanzi;
+                    }
+                });
+                words[0] = con;
+
+                target.innerHTML = words[0].substring(0, letterCount)
+                window.setTimeout(function() {
+                    var usedColor = colors.shift();
+                    colors.push(usedColor);
+                    var usedWord = words.shift();
+                    words.push(usedWord);
+                    x = 1;
+                    target.setAttribute('style', 'color:' + getColor())
+                    letterCount += x;
+                    waiting = false;
+                }, 1000)
+            } else if (letterCount === words[0].length + 1 && waiting === false) {
+                waiting = true;
+                window.setTimeout(function() {
+                    x = -1;
+                    letterCount += x;
+                    waiting = false;
+                }, 1000)
+            } else if (waiting === false) {
+                target.innerHTML = words[0].substring(0, letterCount)
+                letterCount += x;
+            }
+        }, 120)
+        /*window.setInterval(function() {
+            if (visible === true) {
+                con.className = 'console-underscore hidden'
+                visible = false;
+
+            } else {
+                con.className = 'console-underscore'
+
+                visible = true;
+            }
+        }, 400)*/
+    }
+
+    function getColor() {
+        var str = "#";
+        //一个十六进制的值的数组
+        var arr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
+        for (var i = 0; i < 6; i++) {
+            //产生的每个随机数都是一个索引,根据索引找到数组中对应的值,拼接到一起
+            var num = parseInt(Math.random() * 16);
+            str += arr[num];
+        }
+        return str;
+    }
+</script>
