@@ -450,11 +450,11 @@ img::-moz-selection {
 
   .post-comments {
     border-top: 1px solid #DDDDDD;
-    padding: 60px 0; }
+    padding: 10px 0 0 0; }
 
 .post-footcom {
   border-top: 1px solid #DDDDDD;
-  padding: 60px 0; }
+  padding: 10px 0 0 0; }
 
   .post-meta {
     margin: 0;
